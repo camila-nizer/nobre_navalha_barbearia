@@ -8,7 +8,7 @@ namespace ApiCrud.Models
 {
     public class Pessoa
     {   
-        private Guid _id;
+        private Guid _idPessoa;
         private string _nome;
         private DateTime _nascimento;
         private string _cpf;
@@ -16,90 +16,70 @@ namespace ApiCrud.Models
         private string _email;
         private string _sexo;
         private string _tipo;
-        private StatusPessoa _statusPessoa;
+        private Status _statusPessoa;
         private Guid _unidadeBarbearia;
         private Endereco _endereco;
 
-        public Guid Id { 
-            get {return Id;} 
-            set{_id = value;} 
+        public Guid IdPessoa { 
+            get {return _idPessoa;} 
+            set{_idPessoa = value;} 
         }
         public string Nome { 
-            get {return Nome;} 
+            get {return _nome;} 
             set {_nome = value;} 
         }
         public DateTime Nascimento { 
-            get {return Nascimento;} 
+            get {return _nascimento;} 
             set {_nascimento =value;}
         }
         public string CPF { 
-            get {return CPF;}
+            get {return _cpf;}
             set {_cpf=value;}
         }
         public string Telefone {
-            get {return Telefone;}
+            get {return _telefone;}
             set {_telefone=value;}
         }
         public string Email {
-            get {return Email;}
+            get {return _email;}
             set {_email=value;}
         }
         public string Sexo {
-            get {return Sexo;}
+            get {return _sexo;}
             set {_sexo=value;}
         }
         public string Tipo {
-            get {return Tipo;}
+            get {return _tipo;}
             set {_tipo=value;}
         }
-        public StatusPessoa Status {
-            get {return Status;}
+        public Status StatusPessoa {
+            get {return _statusPessoa;}
             set {_statusPessoa=value;}
         }
         public Guid UnidadeBarbearia {
-            get {return UnidadeBarbearia;}
+            get {return _unidadeBarbearia;}
             set {_unidadeBarbearia=value;}
         }
         public Endereco EnderecoPessoa {
-            get {return EnderecoPessoa;}
+            get {return _endereco;}
             set {_endereco=value;}
         } 
         
-    public Pessoa(Guid id, string nome, DateTime nascimento, string cpf, string telefone, string email, string sexo, string tipo, StatusPessoa status, Guid unidadeBarbearia, Endereco endereco)
-    {
-        this.Id = id;
-        this.Nome = nome;
-        this.Nascimento = nascimento;
-        this.CPF = cpf;
-        this.Telefone = telefone;
-        this.Email = email;
-        this.Sexo = sexo;
-        this.Tipo = tipo;
-        this.Status = status;
-        this.UnidadeBarbearia = unidadeBarbearia;
-        this.EnderecoPessoa = endereco;
-    }
+        public Pessoa(Guid id, string nome, DateTime nascimento, string cpf, string telefone, string email, string sexo, string tipo, Status status, Guid unidadeBarbearia, Endereco endereco)
+        {
+            this.IdPessoa = id;
+            this.Nome = nome;
+            this.Nascimento = nascimento;
+            this.CPF = cpf;
+            this.Telefone = telefone;
+            this.Email = email;
+            this.Sexo = sexo;
+            this.Tipo = tipo;
+            this.StatusPessoa = status;
+            this.UnidadeBarbearia = unidadeBarbearia;
+            this.EnderecoPessoa = endereco;
+        }
     }
     
 
 }
-public class StatusPessoa{   
-    private Guid _userId;
-    private bool _statusPessoa; 
-
-    public Guid UserId {
-        get {return _userId;}
-        set {_userId=value;}
-    }
-    public bool Status_Pessoa {
-        get {return _statusPessoa;}
-        set {Status_Pessoa = value;}
-    }
-
-    public StatusPessoa(Guid userId, bool statusPessoa)
-    {
-        this.UserId = userId;
-        this.Status_Pessoa = statusPessoa;
-    }
-}
-

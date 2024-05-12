@@ -15,6 +15,7 @@ namespace ApiCrud.Models
         private DateTime _dataAbertura;
         private string _tipo;
         
+        private Status _statusUni;
 
         public string NomeSocial {
             get {return NomeSocial;}
@@ -40,14 +41,19 @@ namespace ApiCrud.Models
             get {return Tipo;}
             set {_tipo = value;}
         }
+        public Status StatusUni {
+            get {return StatusUni;}
+            set {_statusUni = value;}
+        }
     
-        public Unidades(string nomeSocial, string cnpj, Endereco endereco, string telefone, DateTime dataAbertura, string tipo){
+        public Unidades(string nomeSocial, string cnpj, Endereco endereco, string telefone, DateTime dataAbertura, string tipo, Status statusUni) {
             this.NomeSocial = nomeSocial;
             this.CNPJ = cnpj;
             this.Endereco= endereco;
             this.Telefone = telefone;
             this.DataAbertura=dataAbertura;
-            this.Tipo=tipo; 
+            this.Tipo=tipo;
+            this.StatusUni= statusUni; 
         } 
 
     }

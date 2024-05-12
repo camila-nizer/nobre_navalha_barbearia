@@ -1,4 +1,3 @@
-using ApiCrud.Pessoa;
 using ApiCrud.Routes;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +22,7 @@ Console.WriteLine("APLICAÇÃO RODANDO...");
 
 //Rotas
 app.Health();
-// app.GetPessoa();
+
 // HealthRoute.Health(app);
 
 app.Run();

@@ -14,36 +14,41 @@ namespace ApiCrud.Models.Utils
         private string _cidade;
         private string _estado;
         private string _cep;
+        private Status _statusEndereco;
         public string Rua {
-            get { return Rua; }
+            get { return _rua; }
             set { _rua = value; }
         }
         public string Numero {
-            get { return Numero; }
+            get { return _numero; }
             set { _numero = value; }
         }
         public string Complemento {
-            get { return Complemento; }
+            get { return _complemento; }
             set { _complemento = value; }
         }
         public string Bairro {
-            get { return Bairro; }
+            get { return _bairro; }
             set { _bairro = value; }
         }
         public string Cidade {
-            get { return Cidade; }
+            get { return _cidade; }
             set { _cidade = value; }
         }
         public string Estado {
-            get { return Estado; }
+            get { return _estado; }
             set { _estado = value; }
         }
         public string CEP {
-            get { return CEP; }
+            get { return _cep; }
             set { _cep = value; }
         }
+        public Status StatusEndereco {
+            get { return _statusEndereco; }
+            set { _statusEndereco = value; }
+        }
 
-        public Endereco(string rua, string numero, string complemento, string bairro, string cidade, string estado, string cep){
+        public Endereco(string rua, string numero, string complemento, string bairro, string cidade, string estado, string cep, Status statusEnd){
             this.Rua = rua;
             this.Numero = numero;
             this.Complemento = complemento;
@@ -51,6 +56,7 @@ namespace ApiCrud.Models.Utils
             this.Cidade = cidade;
             this.Estado = estado;
             this.CEP = cep;
+            this.StatusEndereco = statusEnd;
         }
     }
 }
