@@ -19,11 +19,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-Console.WriteLine("Subiu a aplicação docker");
+Console.WriteLine("APLICAÇÃO RODANDO...");
 
 //Rotas
 app.Health();
-app.GetPessoa();
+// app.GetPessoa();
 // HealthRoute.Health(app);
 
 app.Run();
