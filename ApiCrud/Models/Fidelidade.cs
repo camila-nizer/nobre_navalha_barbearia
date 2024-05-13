@@ -33,13 +33,24 @@ namespace ApiCrud.Models
             get{return _dataCortesGratis;}
             set{_dataCortesGratis= value;}
         }
-        public Fidelidade(Guid id, Guid idCliente, int cortesRealizados, int cortesGratisDisponiveis){
+        public Fidelidade(
+            Guid id, 
+            Guid idCliente, 
+            int cortesRealizados, 
+            int cortesGratisDisponiveis
+            ){
             this.IdFidelidade=id;
             this.IdCliente=idCliente;
             this.CortesRealizados=cortesRealizados;
             this.CortesGratisDisponiveis=cortesGratisDisponiveis;
         }
-        public Fidelidade(Guid id, Guid idCliente, int cortesRealizados, int cortesGratisDisponiveis, DateTime dataCortegratis){
+        public Fidelidade(
+            Guid id, 
+            Guid idCliente, 
+            int cortesRealizados, 
+            int cortesGratisDisponiveis, 
+            DateTime dataCortegratis){
+
             this.IdFidelidade=id;
             this.IdCliente=idCliente;
             this.CortesRealizados=cortesRealizados;

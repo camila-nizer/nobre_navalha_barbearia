@@ -48,7 +48,17 @@ namespace ApiCrud.Models.Utils
             set { _statusEndereco = value; }
         }
 
-        public Endereco(string rua, string numero, string complemento, string bairro, string cidade, string estado, string cep, Status statusEnd){
+        public Endereco(
+            string rua, 
+            string numero, 
+            string complemento, 
+            string bairro, 
+            string cidade, 
+            string estado, 
+            string cep, 
+            Status statusEnd
+            ){
+                
             this.Rua = rua;
             this.Numero = numero;
             this.Complemento = complemento;

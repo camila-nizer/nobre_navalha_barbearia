@@ -65,7 +65,19 @@ namespace ApiCrud.Models
             set {_endereco=value;}
         } 
         
-        public Pessoa(Guid id, string nome, DateTime nascimento, string cpf, string telefone, string email, string sexo, string tipo, Status status, Guid unidadeBarbearia, Endereco endereco)
+        public Pessoa(
+            Guid id, 
+            string nome,
+            DateTime nascimento, 
+            string cpf, 
+            string telefone, 
+            string email, 
+            string sexo, 
+            string tipo, 
+            Status status, 
+            Guid unidadeBarbearia, 
+            Endereco endereco
+            )
         {
             this.IdPessoa = id;
             this.Nome = nome;
