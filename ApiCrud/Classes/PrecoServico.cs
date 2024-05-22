@@ -10,7 +10,7 @@ namespace ApiCrud.Models
     {
         private Guid _idPrecoServico;
         private float _precoServico;
-        private Status _statusServico;
+        private List<Status> _statusServico;
 
         [Key]public Guid IdPrecoServico{
             get{return _idPrecoServico;}
@@ -20,13 +20,13 @@ namespace ApiCrud.Models
             get{return _precoServico;}
             set{_precoServico=value;}
         }
-        public Status StatusPrecoServico{
+        public List<Status> StatusPrecoServico{
             get{return _statusServico;}
             set{_statusServico=value;}
         }
 
         public PrecoServico(){}
-        public PrecoServico(Guid id, float preco, Status statusPreco){
+        public PrecoServico(Guid id, float preco, List<Status> statusPreco){
             IdPrecoServico=id;
             Preco=preco;
             StatusPrecoServico=statusPreco;

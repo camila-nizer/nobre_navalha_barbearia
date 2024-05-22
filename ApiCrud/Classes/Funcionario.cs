@@ -10,13 +10,13 @@ namespace ApiCrud.Models
     public class Funcionario : Pessoa
     {
         private Guid _idFuncionario;
-        private Status _statusFuncionario;
+        private List<Status> _statusFuncionario;
 
         public Guid IdFuncionario{
             get{ return _idFuncionario;}
             set{ _idFuncionario = value;}
         }
-        public Status StatusFuncionario{
+        public List<Status> StatusFuncionario{
             get{ return _statusFuncionario;}
             set{_statusFuncionario = value;}
         }
@@ -32,10 +32,10 @@ namespace ApiCrud.Models
             string email,
             string sexo,
             string tipo,
-            Status statusPessoa,
+            List<Status> statusPessoa,
             Guid unidade,
-            Endereco endereco, 
-            Status status
+            List<Endereco> endereco, 
+            List<Status> status
             ): base (
                 pessoa,
                 nome,

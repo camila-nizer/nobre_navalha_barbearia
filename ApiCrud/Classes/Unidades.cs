@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiCrud.Models.Utils;
@@ -13,12 +14,12 @@ namespace ApiCrud.Models
         private Guid _idUnidade;
         private string _nomeSocial;
         private string _cnpj;
-        private Endereco _endereco;
+        private List<Endereco> _endereco;
         private string _telefone;
         private DateTime _dataAbertura;
         private string _tipo;
         
-        private Status _statusUni;
+        private List<Status> _statusUni;
 
         [Key]public Guid IdUnidade {
             get {return _idUnidade;}
@@ -32,7 +33,7 @@ namespace ApiCrud.Models
             get {return _cnpj;}
             set {_cnpj = value;}
         }
-        public Endereco Endereco {
+        [NotMapped]public List<Endereco> Endereco {
             get {return _endereco;}
             set {_endereco = value;}
         }
@@ -48,13 +49,13 @@ namespace ApiCrud.Models
             get {return _tipo;}
             set {_tipo = value;}
         }
-        public Status StatusUni {
+        public List<Status> StatusUni {
             get {return _statusUni;}
             set {_statusUni = value;}
         }
 
         public Unidades(){}
-        public Unidades(Guid id, string nomeSocial, string cnpj, Endereco endereco, string telefone, DateTime dataAbertura, string tipo, Status statusUni) {
+        public Unidades(Guid id, string nomeSocial, string cnpj, List<Endereco> endereco, string telefone, DateTime dataAbertura, string tipo, List<Status> statusUni) {
             this.IdUnidade=id;
             this.NomeSocial = nomeSocial;
             this.CNPJ = cnpj;

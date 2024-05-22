@@ -1,71 +1,101 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ApiCrud.Classes;
 using ApiCrud.Models.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ApiCrud.Models
 {
-    public class UnidadeBarbeariaDbContext: DbContext
+    public class NobreNavalhaBarbeariaDbContext : DbContext
     {
-    public DbSet<Unidades> UnidadesBarbearia { get; set; }
-    public DbSet<UnidadeServico> UnidadeServico {get; set; }
-    public DbSet<Pessoa> Pessoas { get; set; }
-    public DbSet<Desconto> Desconto { get; set; }
-    public DbSet<Cliente> Cliente {get; set; }
-    public DbSet<Fidelidade> Fidelidade {get; set; }
-    public DbSet<Atendimento> Atendimento {get; set; }
-    public DbSet<Funcionario> Funcionario {get; set; }
-    public DbSet<Especialidade> Especialidade {get; set; }
-    public DbSet<FuncionarioEspecialidade> FuncionarioEspecialidade {get; set; }
-    public DbSet<Servico> Servico {get; set; }
-    public DbSet<PrecoServico> PrecoServico {get; set; }
-    
-    
+        public DbSet<Unidades> UnidadesBarbearia { get; set; }
+        public DbSet<UnidadeServico> UnidadeServico { get; set; }
+        public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Desconto> Desconto { get; set; }
+        public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<Fidelidade> Fidelidade { get; set; }
+        public DbSet<Atendimento> Atendimento { get; set; }
+        public DbSet<Funcionario> Funcionario { get; set; }
+        public DbSet<Especialidade> Especialidade { get; set; }
+        public DbSet<FuncionarioEspecialidade> FuncionarioEspecialidade { get; set; }
+        public DbSet<Servico> Servico { get; set; }
+        public DbSet<PrecoServico> PrecoServico { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=meubanco;Username=postgres;Password=camila;");
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Port=4000;Database=meubanco;Username=postgres;Password=camila;");
+        }
 
-    }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder){
-        base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Status>().HasNoKey();
+            modelBuilder.Entity<Endereco>().HasNoKey();
             modelBuilder.Entity<Pessoa>()
                 .HasKey(p => p.IdPessoa);
+
+            modelBuilder.Entity<Pessoa>()
+                .Property(p => p.EnderecoPessoa)
+                .HasConversion(
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Endereco>>(v) ?? new List<Endereco>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Endereco>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+
+            modelBuilder.Entity<Pessoa>()
+                .Property(p => p.EnderecoPessoa) 
+                .HasConversion(
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Endereco>>(v) ?? new List<Endereco>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Endereco>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
             
+            modelBuilder.Entity<Pessoa>()
+                .HasKey(p => p.IdPessoa);
+
             modelBuilder.Entity<Pessoa>()
                 .Property(c => c.StatusPessoa)
                 .HasColumnName("StatusPessoa")
                 .HasConversion(
-                    v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                    v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-                );
-                
-            modelBuilder.Entity<Cliente>()
-                .HasBaseType<Pessoa>();
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
 
-            modelBuilder.Entity<Atendimento>()
-                .Property(a => a.StatusAtendimento)
-                .HasColumnName("StatusAtendimento")
-                .HasConversion(
-                    v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                    v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-                );
             modelBuilder.Entity<Cliente>()
                 .Property(c => c.IdCliente)
                 .ValueGeneratedNever();
+            
+            modelBuilder.Entity<Cliente>()
+                .Property(c => c.StatusPessoa)
+                .HasColumnName("StatusPessoa")
+                .HasConversion(
+                    v => JsonConvert.SerializeObject(v), // Converter a lista de Status para JSON
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
 
             modelBuilder.Entity<Cliente>()
                 .Property(c => c.StatusCliente)
-                .HasColumnName("StatusCliente") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusCliente")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+                
 
             modelBuilder.Entity<Funcionario>()
                 .HasBaseType<Pessoa>();
@@ -73,77 +103,115 @@ namespace ApiCrud.Models
             modelBuilder.Entity<Funcionario>()
                 .Property(f => f.IdFuncionario)
                 .ValueGeneratedNever();
+            
+            modelBuilder.Entity<Funcionario>()
+                .Property(f => f.StatusPessoa) 
+                .HasColumnName("StatusPessoa") 
+                .HasConversion(
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
 
-            modelBuilder.Entity<Status>()
-                .HasNoKey();
-            modelBuilder.Entity<Endereco>()
-                .HasNoKey();
             modelBuilder.Entity<Desconto>()
                 .Property(c => c.StatusDesconto)
-                .HasColumnName("StatusDesconto") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusDesconto")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );    
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
 
             modelBuilder.Entity<Especialidade>()
                 .Property(c => c.StatusEspecialidade)
-                .HasColumnName("StatusEspecialidade") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusEspecialidade")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );  
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+
             modelBuilder.Entity<Funcionario>()
                 .Property(c => c.StatusFuncionario)
-                .HasColumnName("StatusFuncionario") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusFuncionario")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );    
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+
             modelBuilder.Entity<FuncionarioEspecialidade>()
                 .Property(c => c.StatusFuncEsp)
-                .HasColumnName("StatusFuncEsp") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusFuncEsp")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );  
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+
             modelBuilder.Entity<PrecoServico>()
                 .Property(c => c.StatusPrecoServico)
-                .HasColumnName("StatusPrecoServico") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusPrecoServico")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );   
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+
             modelBuilder.Entity<Servico>()
                 .Property(c => c.StatusServico)
-                .HasColumnName("StatusServico") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusServico")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );   
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+
             modelBuilder.Entity<UnidadeServico>()
                 .Property(c => c.StatusUniSer)
-                .HasColumnName("StatusUnidadeServico") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusUnidadeServico")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );   
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+
             modelBuilder.Entity<Unidades>()
                 .Property(c => c.StatusUni)
-                .HasColumnName("StatusUnidade") // Define o nome da coluna no banco de dados
+                .HasColumnName("StatusUnidade")
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            );
-            modelBuilder.Entity<Endereco>()
-                .Property(c => c.StatusEndereco)
-                .HasColumnName("StatusUnidade") // Define o nome da coluna no banco de dados
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+
+            modelBuilder.Entity<Atendimento>()
+                .Property(a => a.StatusAtendimento)
                 .HasConversion(
-                v => Newtonsoft.Json.JsonConvert.SerializeObject(v),
-                v => Newtonsoft.Json.JsonConvert.DeserializeObject<Status>(v)
-            ); 
-    }
-
-
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Status>>(v) ?? new List<Status>())
+                .Metadata.SetValueComparer(new ValueComparer<List<Status>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+        }
     }
 }

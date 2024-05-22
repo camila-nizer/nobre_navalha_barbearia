@@ -19,7 +19,7 @@ namespace ApiCrud.Classes
          private Guid _idDesconto;
         private DateTime _dataHora;
         private string _observacoes;
-        private Status _statusAtendimento;
+        private List<Status> _statusAtendimento;
         private string _tipoPagamento;
         private decimal  _valorPago;
         [Key] public Guid IdAtendimento{
@@ -55,7 +55,7 @@ namespace ApiCrud.Classes
             set{ _observacoes = value;}
         }
         
-         public Status StatusAtendimento{
+         public List<Status> StatusAtendimento{
             get{ return _statusAtendimento;}
             set{ _statusAtendimento = value;}
         }
@@ -77,7 +77,7 @@ namespace ApiCrud.Classes
             Guid idPrecoServico, 
             Guid unidade, 
             DateTime data, 
-            Status statusAtendimento, 
+            List<Status> statusAtendimento, 
             string observacoes, 
             string tipoPg,
             Guid idDesconto){
@@ -104,7 +104,7 @@ namespace ApiCrud.Classes
         }
        
         private decimal BuscarPrecoServico(Guid idPrecoServico){
-            using (NpgsqlConnection conn = new NpgsqlConnection("Host=localhost;Port=5432;Database=meubanco;Username=meuusuario;Password=minhasenha;"))
+            using (NpgsqlConnection conn = new NpgsqlConnection("Host=localhost;Port=4000;Database=meubanco;Username=postgres;Password=camila;"))
             {
                 conn.Open();
                 string queryPreco = "SELECT preco FROM preco_servico WHERE id_preco_servico = @idPrecoServico";
@@ -124,7 +124,7 @@ namespace ApiCrud.Classes
             }
         }
         private decimal BuscarValorDesconto(Guid idDesconto){
-            using (NpgsqlConnection conn = new NpgsqlConnection("Host=localhost;Port=5432;Database=meubanco;Username=meuusuario;Password=minhasenha;"))
+            using (NpgsqlConnection conn = new NpgsqlConnection("Host=localhost;Port=4000;Database=meubanco;Username=postgres;Password=camila;"))
             {
                 conn.Open();
                 string queryDesconto = "SELECT valor FROM desconto WHERE id_desconto = @idDesconto";

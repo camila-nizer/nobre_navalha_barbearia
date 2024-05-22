@@ -10,7 +10,7 @@ namespace ApiCrud.Models
     {
         private Guid _idUnidadeServico;
         private Guid _idServico;
-        private Status _statusUniSer;
+        private List<Status> _statusUniSer;
         [Key]public Guid IdUnidadeServico{
             get{ return _idUnidadeServico;}
             set{ _idUnidadeServico = value;}
@@ -19,13 +19,13 @@ namespace ApiCrud.Models
             get{ return _idServico;}
             set{ _idServico = value;}
         }
-        public Status StatusUniSer{
+        public List<Status> StatusUniSer{
             get{ return _statusUniSer;}
             set{ _statusUniSer = value;}
         }
 
         public UnidadeServico(){}
-        public UnidadeServico(Guid id, Guid idServico, Status statusUniSer){
+        public UnidadeServico(Guid id, Guid idServico, List<Status> statusUniSer){
             this.IdUnidadeServico = id;
             this.IdServico = idServico;
             this.StatusUniSer = statusUniSer;

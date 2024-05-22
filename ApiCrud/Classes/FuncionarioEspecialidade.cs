@@ -10,7 +10,7 @@ namespace ApiCrud.Models
     {
         private Guid _idFuncionario;
         private Guid _idEspecialidade;
-        private Status _statusFuncEsp;
+        private List<Status> _statusFuncEsp;
 
         [Key]public Guid IdFuncionario{
             get{ return _idFuncionario;}
@@ -20,13 +20,13 @@ namespace ApiCrud.Models
             get{return _idEspecialidade;}
             set{_idEspecialidade = value;}
         }
-        public Status StatusFuncEsp{
+        public List<Status> StatusFuncEsp{
             get{ return _statusFuncEsp;}
             set{_statusFuncEsp = value;}
         }
 
         public FuncionarioEspecialidade(){}
-        public FuncionarioEspecialidade(Guid idFuncionario, Guid idEspecialidade, Status statusFuncEsp){
+        public FuncionarioEspecialidade(Guid idFuncionario, Guid idEspecialidade, List<Status> statusFuncEsp){
             this.IdFuncionario = idFuncionario;
             this.IdEspecialidade= idEspecialidade;
             this.StatusFuncEsp= statusFuncEsp;

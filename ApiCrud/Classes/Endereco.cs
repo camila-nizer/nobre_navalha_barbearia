@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ApiCrud.Models.Utils
 {
-    [ComplexType]
     public class Endereco
     {
         private string _rua;
@@ -16,7 +15,7 @@ namespace ApiCrud.Models.Utils
         private string _cidade;
         private string _estado;
         private string _cep;
-        private Status _statusEndereco;
+        private List<Status> _statusEndereco;
         public string Rua {
             get { return _rua; }
             set { _rua = value; }
@@ -45,7 +44,7 @@ namespace ApiCrud.Models.Utils
             get { return _cep; }
             set { _cep = value; }
         }
-        public Status StatusEndereco {
+        [NotMapped] public List<Status> StatusEndereco {
             get { return _statusEndereco; }
             set { _statusEndereco = value; }
         }
@@ -59,7 +58,7 @@ namespace ApiCrud.Models.Utils
             string cidade, 
             string estado, 
             string cep, 
-            Status statusEnd
+            List<Status> statusEnd
             ){
                 
             this.Rua = rua;

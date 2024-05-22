@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiCrud.Models.Utils;
@@ -17,9 +18,9 @@ namespace ApiCrud.Models
         private string _email;
         private string _sexo;
         private string _tipo;
-        private Status _statusPessoa;
+        private List<Status> _statusPessoa;
         private Guid _unidadeBarbearia;
-        private Endereco _endereco;
+        private List<Endereco> _endereco;
 
         public Guid IdPessoa { 
             get {return _idPessoa;} 
@@ -53,7 +54,7 @@ namespace ApiCrud.Models
             get {return _tipo;}
             set {_tipo=value;}
         }
-        public Status StatusPessoa {
+        public List<Status> StatusPessoa {
             get {return _statusPessoa;}
             set {_statusPessoa=value;}
         }
@@ -61,7 +62,7 @@ namespace ApiCrud.Models
             get {return _unidadeBarbearia;}
             set {_unidadeBarbearia=value;}
         }
-        public Endereco EnderecoPessoa {
+        public List<Endereco> EnderecoPessoa {
             get {return _endereco;}
             set {_endereco=value;}
         } 
@@ -75,9 +76,9 @@ namespace ApiCrud.Models
             string email, 
             string sexo, 
             string tipo, 
-            Status status, 
+            List<Status> status, 
             Guid unidadeBarbearia, 
-            Endereco endereco
+            List<Endereco> endereco
             )
         {
             this.IdPessoa = id;
@@ -91,6 +92,9 @@ namespace ApiCrud.Models
             this.StatusPessoa = status;
             this.UnidadeBarbearia = unidadeBarbearia;
             this.EnderecoPessoa = endereco;
+        }
+        public virtual void ExibeDados(){
+        Console.WriteLine("Pessoa : ${Nome}. CPF: ${CPF}. Cadastrado na Barbearia ${UnidadeBarbearia}");
         }
     }
     

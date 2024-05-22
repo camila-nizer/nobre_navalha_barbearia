@@ -11,7 +11,7 @@ namespace ApiCrud.Models
     {
         private Guid _idCliente;
         private string _observacoes;
-        private Status _statusCliente;
+        private List<Status> _statusCliente;
         public Guid IdCliente {
             get {return _idCliente;}
             set {_idCliente =value;}
@@ -21,7 +21,7 @@ namespace ApiCrud.Models
             set {_observacoes= value;}
         }
 
-        public Status StatusCliente{
+        public List<Status> StatusCliente{
             get {return _statusCliente;}
             set {_statusCliente= value;}
         }
@@ -36,11 +36,11 @@ namespace ApiCrud.Models
             string email,
             string sexo,
             string tipo,
-            Status statusPessoa,
+            List<Status> statusPessoa,
             Guid unidade,
-            Endereco endereco,
+            List<Endereco> endereco,
             string observacoes,
-            Status statusCliente
+            List<Status> statusCliente
             ): base (
                 idpessoa,
                 nome,
@@ -62,7 +62,7 @@ namespace ApiCrud.Models
         public Cliente(
             Guid id, 
             string observacoes,
-            Status statusCliente,
+            List<Status> statusCliente,
             Pessoa pessoa
             ): base (
                 pessoa.IdPessoa,
@@ -80,6 +80,9 @@ namespace ApiCrud.Models
             this.IdCliente = id;
             this.Observacoes=observacoes;
             this.StatusCliente = statusCliente;
+        }
+        public override void ExibeDados(){
+        Console.WriteLine("Cliente : ${Nome}. Status: ${StatusCliente}. É um cliente cadastrado no id ${IdCliente}");
         }
     }
         
