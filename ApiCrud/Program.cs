@@ -1,4 +1,8 @@
+using ApiCrud.Models;
+using ApiCrud.Pessoa;
 using ApiCrud.Routes;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 var app = builder.Build();
+var dbContext = new NobreNavalhaBarbeariaDbContext();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -22,6 +28,7 @@ Console.WriteLine("APLICAÇÃO RODANDO...");
 
 //Rotas
 app.Health();
+app.CriaPessoa(dbContext);
 
 // HealthRoute.Health(app);
 

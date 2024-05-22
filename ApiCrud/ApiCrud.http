@@ -1,6 +1,8 @@
-@ApiCrud_HostAddress = http://localhost:5124
+@ApiCrud_HostAddress = http://localhost:5125
 
 GET {{ApiCrud_HostAddress}}/health/
 Accept: application/text
 
+POST {{ApiCrud_HostAddress}}/pessoa/
+Accept: application/json
 ###
