@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  webapi:
+    image: mcr.microsoft.com/dotnet/aspnet:8.0
+    container_name: ApiCrud
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5124:8080"  # Porta da aplicação C#
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:latest
+    container_name: meu-postgresql
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: nobre_navalha
+    ports:
+      - "5434:5432"  # Porta do PostgreSQL
